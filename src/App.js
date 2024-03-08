@@ -8,13 +8,20 @@ import {
   Col,
   Image,
 } from "react-bootstrap";
-import { useState } from "react";
+import { createContext, useState } from "react";
 import data from "./components/data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./Routes/Detail";
+import axios from 'axios'
+
+export let Context1 = createContext()   
+//Context API =성능이슈, 컴포넌트 재활용 어려움 state 변경시 context를 안쓰는 다른것들까지 재랜더링
+
 
 function App() {
-  let [photo] = useState(data);
+  let [photo, setPhoto] = useState(data);
+  const [inventory, setInventory] = useState([10,20,30]);
+
   const navigate = useNavigate();
 
   return (
@@ -60,24 +67,46 @@ function App() {
               <Container>
                 <Row>
                   {photo.map((a, i) => {
-                    return <Card photo={photo[i]} i={i + 1}></Card>;
+                    return <Card photo={photo[i]} i={i}></Card>;
                   })}
                 </Row>
               </Container>
+              <button onClick={()=>{
+
+                  axios.get('https://codingapple1.github.io/shop/data2.json')
+                  .then((result)=>{
+                          let copy =[...photo, ...result.data];
+                          setPhoto(copy);
+                  })
+                  .catch()
+              }}>더보기</button>
             </>
           }
-        />
-        <Route path="/detail/:id" element={<Detail photo={photo}/>} />
+        /> 
+        <Route path="/detail/:id" element={
+          <Context1.Provider value={{ inventory}}>
+        <Detail photo={photo}/>
+        </Context1.Provider>
+        } />
         <Route path="*" element={<div>404 not found</div>} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>404 not found</div>} />
           <Route path="location" element={<div>404 not found</div>} />
         </Route>
       </Routes>
+
     </div>
+
+
+
   );
 }
-
+/*동시에 ajax 
+promise.all([axios.get('/url1'),axios.get('/url2')])
+.then(()=>{
+      두개다 성공했을때 짜기 쓰기  
+})
+*/
 function About(params) {
   return (
     <div>
@@ -91,15 +120,19 @@ function About(params) {
 function Card(props) {
   return (
     <Col sm>
+      <Link to={"/detail/" + props.i}>
       <Image
-        src={process.env.PUBLIC_URL + "/img/IMG_" + props.i + ".JPG"}
+        src={process.env.PUBLIC_URL + "/img/IMG_" + (props.i+1) + ".JPG"}
         rounded
         width={80}
       />{" "}
       <h4>{props.photo.title}</h4>
       <p> {props.photo.content}</p>{" "}
+      </Link>
     </Col>
   );
 }
+
+
 
 export default App;
