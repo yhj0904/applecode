@@ -12,6 +12,7 @@ import { createContext, useState } from "react";
 import data from "./components/data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./Routes/Detail";
+import Cart from "./Routes/Cart";
 import axios from 'axios'
 
 export let Context1 = createContext()   
@@ -42,8 +43,8 @@ function App() {
               </Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
-                  Another action
+                <NavDropdown.Item href="/Cart">
+                  Cart
                 </NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.3">
                   Something
@@ -93,6 +94,7 @@ function App() {
           <Route path="member" element={<div>404 not found</div>} />
           <Route path="location" element={<div>404 not found</div>} />
         </Route>
+        <Route path="/cart" element={<Cart />} />
       </Routes>
 
     </div>
@@ -107,7 +109,7 @@ promise.all([axios.get('/url1'),axios.get('/url2')])
       두개다 성공했을때 짜기 쓰기  
 })
 */
-function About(params) {
+function About() {
   return (
     <div>
       <h4>etstetetaset</h4>

@@ -1,13 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import {Nav} from 'react-bootstrap'
+import {Nav,Button} from 'react-bootstrap'
 import "../App.css";
+import { addItem } from "../store";
+import { useDispatch } from "react-redux";
 
 import {Context1} from './../App'
 
 function Detail(props) {
-
+const dispatch = useDispatch()
  let {inventory} = useContext(Context1) //destructuring
 
   useEffect(() => {
@@ -31,14 +33,14 @@ function Detail(props) {
   const [tapState, setTapState] = useState(0);
   
   useEffect(() => {
-    if (isNaN(num) == true) {
+    if (isNaN(num) === true) {
       alert("정수만 입력가능 합니다.");
     }
   }, [num]);
 
   return (
     <div className="container">
-      {alert1 == true ? (
+      {alert1 === true ? (
         <div className="alert alert-warning"> 빨랑 눌러봐라~ </div>
       ) : null}
       
@@ -58,6 +60,13 @@ function Detail(props) {
           <h4 className="pt-5">{findContent.title}</h4>
           <p>{findContent.content}</p>
           <p>{findContent.price}</p>
+          <Button variant="warning" onClick={()=>{
+            dispatch(addItem({
+              id : findContent.id,
+              name : findContent.title,
+              count : findContent.price
+            }))
+          }}>장바구니에 담기</Button>{' '}
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
