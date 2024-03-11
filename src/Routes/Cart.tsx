@@ -1,7 +1,7 @@
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import{changeName,increase} from "./../store/userSlice"
-import {addCount} from './../store'
+import{changeName,increase} from "../store/userSlice"
+import {addCount} from '../store'
 
 function Cart() {
   const state = useSelector((state) => {

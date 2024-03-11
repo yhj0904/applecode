@@ -6,7 +6,7 @@ import "../App.css";
 import { addItem } from "../store";
 import { useDispatch } from "react-redux";
 
-import {Context1} from './../App'
+import {Context1} from '../App'
 
 function Detail(props) {
 const dispatch = useDispatch()
